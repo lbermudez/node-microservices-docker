@@ -1,0 +1,26 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - 37017:27017
+
+  redis:
+    image: redis
+    ports:
+      - 7379:6379
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.45
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - 16686:16686
+      - 4317:4317
+      - 4318:4318
+
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    ports:
+      - 5672:5672
+      - 15672:15672
