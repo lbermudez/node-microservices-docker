@@ -31,9 +31,7 @@ class ServiceClient {
       const response = await axios(requestOptions);
       return response.data;
     } catch (error) {
-      const errorMessage =
-        (error.response && error.response.data && error.data.message) ||
-        error.message;
+      const errorMessage = error?.response?.data?.message || error?.message;
       throw new Error(errorMessage);
     }
   }
