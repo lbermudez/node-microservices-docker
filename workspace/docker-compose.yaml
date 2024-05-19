@@ -4,6 +4,8 @@ services:
     image: mongo
     ports:
       - 37017:27017
+    volumes:
+    - mongo-data:/data/db
 
   redis:
     image: redis
@@ -24,3 +26,55 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+
+  registry-service:
+    image: shopper-registry-service
+    ports:
+      - 3080:3080
+
+  user-service:
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/shopper
+      - REGISTRY_SERVICE_URL=http://registry-service:3080
+    image: shopper-user-service
+    ports:
+      - 3040:3040
+
+  cart-service:
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - REGISTRY_SERVICE_URL=http://registry-service:3080
+    image: shopper-cart-service
+    ports:
+      - 3050:3050
+
+  catalog-service:
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/shopper
+      - REGISTRY_SERVICE_URL=http://registry-service:3080
+    image: shopper-catalog-service
+    ports:
+      - 3060:3060
+
+  shopper-node-app:
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - REDIS_URL=redis://redis:6379
+      - REGISTRY_SERVICE_URL=http://registry-service:3080
+    image: shopper-node-app
+    ports:
+      - 3000:3000
+      
+  order-service:
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/shopper
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - REGISTRY_SERVICE_URL=http://registry-service:3080
+    image: shopper-order-service
+    ports:
+      - 3070:3070
+    depends_on:
+      - rabbitmq
+
+volumes:
+  mongo-data:

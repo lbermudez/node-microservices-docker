@@ -25,8 +25,11 @@ class ServiceClient {
 
   static async callService(servicename, requestOptions) {
     const { ip, port } = await this.getService(servicename);
+    console.log('ServiceClient calling to ip:', ip, 'port:', port, 'requestOptions:', requestOptions)
     // eslint-disable-next-line no-param-reassign
     requestOptions.url = `http://${ip}:${port}${requestOptions.url}`;
+    console.log('ServiceClient calling to url:', requestOptions.url)
+    
     try {
       const response = await axios(requestOptions);
       return response.data;

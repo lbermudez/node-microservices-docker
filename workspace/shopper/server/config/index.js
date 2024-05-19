@@ -8,24 +8,20 @@ module.exports = {
   serviceVersion: pkg.version,
 
   registry: {
-    url: "http://localhost:3080",
+    url: process.env.REGISTRY_SERVICE_URL || "http://localhost:3080",
     version: "*"
   },
-
-  // MongoDB configuration
-  mongodb: {
-    // Connection URL for the MongoDB server
-    url: "mongodb://localhost:37017/shopper"
-  },
-
   // Redis configuration
   redis: {
     // Connection options for the Redis server
     options: {
       // Connection URL for the Redis server
-      url: "redis://localhost:7379"
+      url: process.env.REDIS_URL || "redis://localhost:7379"
     },
     // Placeholder for the Redis client, to be connected elsewhere
     client: null
+  },
+  rabbitmq: {
+    url: process.env.RABBITMQ_URL || "amqp://localhost:5672"
   }
 };

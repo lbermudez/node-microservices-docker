@@ -1,6 +1,7 @@
 /** @module OrderService */
 const amqp = require("amqplib");
 const ServiceClient = require("./ServiceClient");
+const config = require("../config");
 
 /**
  * Service class for managing orders
@@ -14,7 +15,8 @@ class OrderServiceClient {
    */
   static async create(userId, email, items) {
     try {
-      const connection = await amqp.connect("amqp://127.0.0.1");
+      console.log('rabitmq: trying connection to', config.rabbitmq.url)
+      const connection = await amqp.connect(config.rabbitmq.url);
       const channel = await connection.createChannel();
       const queue = "orders";
       const message = JSON.stringify({ userId, email, items });

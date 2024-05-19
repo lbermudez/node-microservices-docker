@@ -4,12 +4,9 @@ module.exports = {
   serviceName: pkg.name,
   serviceVersion: pkg.version,
   mongodb: {
-    url: "mongodb://localhost:37017/shopper"
+    url: process.env.MONGO_URL || "mongodb://localhost:37017/shopper"
   },
-  redis: {
-    options: {
-      url: "redis://localhost:7379"
-    },
-    client: null
+  "resistry-service": {
+    url: process.env.REGISTRY_SERVICE_URL || "http://localhost:3080",
   }
 };

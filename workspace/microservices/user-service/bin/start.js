@@ -35,7 +35,7 @@ server.on("listening", () => {
   const registerService = () =>
     axios
       .put(
-        `http://localhost:3080/register/${config.serviceName}/${
+        `${config["resistry-service"].url}/register/${config.serviceName}/${
           config.serviceVersion
         }/${server.address().port}`
       )
@@ -43,7 +43,7 @@ server.on("listening", () => {
   const unregisterService = () =>
     axios
       .delete(
-        `http://localhost:3080/register/${config.serviceName}/${
+        `${config["resistry-service"].url}/register/${config.serviceName}/${
           config.serviceVersion
         }/${server.address().port}`
       )
@@ -81,5 +81,5 @@ server.on("listening", () => {
 });
 
 // Start the server
-
-connectToMongoose(config.mongodb.url).then(() => server.listen(0));
+const port = process.env.PORT || 3040;
+connectToMongoose(config.mongodb.url).then(() => server.listen(port));

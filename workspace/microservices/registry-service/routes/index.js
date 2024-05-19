@@ -9,8 +9,10 @@ const router = express.Router();
 function getRequestArguments(req) {
   const { servicename, serviceversion, serviceport } = req.params;
   let serviceip = req.ip;
-  if (serviceip.includes("::1") || serviceip.includes("::ffff:127.0.0.1")) {
+  if (serviceip.includes("::1")) {
     serviceip = "127.0.0.1";
+  } else if (serviceip.includes("::ffff:")) {
+    serviceip = serviceip.replace("::ffff:", "");
   }
   return { servicename, serviceversion, serviceport, serviceip };
 }
