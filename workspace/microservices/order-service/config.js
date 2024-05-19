@@ -11,5 +11,8 @@ module.exports = {
   },
   rabbitmq: {
     url: process.env.RABBITMQ_URL || "amqp://localhost:5672"
+  },
+  "open-telemetry-collector": {
+    url: process.env.OPENTELEMETRY_URL || "http://localhost:4318/v1/traces"
   }
 };

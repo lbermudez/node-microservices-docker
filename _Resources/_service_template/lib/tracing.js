@@ -15,10 +15,15 @@ const {
 const {
   OTLPTraceExporter
 } = require("@opentelemetry/exporter-trace-otlp-http");
+const { diag, DiagConsoleLogger, DiagLogLevel } = require("@opentelemetry/api");
+
+diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR);
 
 const sdks = [];
 
-const exporter = new OTLPTraceExporter();
+const exporter = new OTLPTraceExporter({
+  url: config["open-telemetry-collector"].url 
+});
 
 module.exports = (serviceName) => {
   if (sdks[serviceName]) return sdks[serviceName];

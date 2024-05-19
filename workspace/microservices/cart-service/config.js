@@ -11,5 +11,8 @@ module.exports = {
       url: process.env.REDIS_URL || "redis://localhost:7379"
     },
     client: null
+  },
+  "open-telemetry-collector": {
+    url: process.env.OPENTELEMETRY_URL || "http://localhost:4318/v1/traces"
   }
 };

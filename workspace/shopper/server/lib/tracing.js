@@ -15,10 +15,13 @@ const {
 const {
   OTLPTraceExporter
 } = require("@opentelemetry/exporter-trace-otlp-http");
+const config = require("../config");
 
 const sdks = [];
 
-const exporter = new OTLPTraceExporter();
+const exporter = new OTLPTraceExporter({
+  url: config["open-telemetry-collector"].url 
+});
 
 module.exports = (serviceName) => {
   if (sdks[serviceName]) return sdks[serviceName];

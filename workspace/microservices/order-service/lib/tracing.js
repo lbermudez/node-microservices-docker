@@ -9,6 +9,7 @@ const {
 } = require("@opentelemetry/auto-instrumentations-node");
 const { BatchSpanProcessor } = require("@opentelemetry/sdk-trace-base");
 const { Resource } = require("@opentelemetry/resources");
+const config = require("../config"); // Import the 'config' module
 const {
   SemanticResourceAttributes
 } = require("@opentelemetry/semantic-conventions");
@@ -18,7 +19,9 @@ const {
 
 const sdks = [];
 
-const exporter = new OTLPTraceExporter();
+const exporter = new OTLPTraceExporter({
+  url: config["open-telemetry-collector"].url
+});
 
 module.exports = (serviceName) => {
   if (sdks[serviceName]) return sdks[serviceName];
