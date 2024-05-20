@@ -29,59 +29,81 @@ services:
 
   registry-service:
     environment:
-      - OPENTELEMETRY_URL=http://jaeger:4318/v1/trace
+      - OPENTELEMETRY_URL=http://jaeger:4318/v1/traces
     image: shopper-registry-service
     ports:
       - 3080:3080
+    depends_on:
+      - jaeger
 
   user-service:
     environment:
       - MONGO_URL=mongodb://mongodb:27017/shopper
       - REGISTRY_SERVICE_URL=http://registry-service:3080
-      - OPENTELEMETRY_URL=http://jaeger:4318/v1/trace
+      - OPENTELEMETRY_URL=http://jaeger:4318/v1/traces
     image: shopper-user-service
     ports:
       - 3040:3040
+    depends_on:
+      - mongodb
+      - registry-service
+      - jaeger
 
   cart-service:
     environment:
       - REDIS_URL=redis://redis:6379
       - REGISTRY_SERVICE_URL=http://registry-service:3080
-      - OPENTELEMETRY_URL=http://jaeger:4318/v1/trace
+      - OPENTELEMETRY_URL=http://jaeger:4318/v1/traces
     image: shopper-cart-service
     ports:
       - 3050:3050
+    depends_on:
+      - mongodb
+      - registry-service
+      - jaeger
 
   catalog-service:
     environment:
       - MONGO_URL=mongodb://mongodb:27017/shopper
       - REGISTRY_SERVICE_URL=http://registry-service:3080
-      - OPENTELEMETRY_URL=http://jaeger:4318/v1/trace
+      - OPENTELEMETRY_URL=http://jaeger:4318/v1/traces
     image: shopper-catalog-service
     ports:
       - 3060:3060
+    depends_on:
+      - mongodb
+      - registry-service
+      - jaeger
 
   shopper-node-app:
     environment:
       - RABBITMQ_URL=amqp://rabbitmq:5672
       - REDIS_URL=redis://redis:6379
       - REGISTRY_SERVICE_URL=http://registry-service:3080
-      - OPENTELEMETRY_URL=http://jaeger:4318/v1/trace
+      - OPENTELEMETRY_URL=http://jaeger:4318/v1/traces
     image: shopper-node-app
     ports:
       - 3000:3000
+    depends_on:
+      - rabbitmq
+      - redis
+      - registry-service
+      - jaeger
       
   order-service:
     environment:
       - MONGO_URL=mongodb://mongodb:27017/shopper
       - RABBITMQ_URL=amqp://rabbitmq:5672
       - REGISTRY_SERVICE_URL=http://registry-service:3080
-      - OPENTELEMETRY_URL=http://jaeger:4318/v1/trace
+      - OPENTELEMETRY_URL=http://jaeger:4318/v1/traces
     image: shopper-order-service
     ports:
       - 3070:3070
     depends_on:
       - rabbitmq
+      - mongodb
+      - registry-service
+      - jaeger
 
 volumes:
   mongo-data:

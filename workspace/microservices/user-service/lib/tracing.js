@@ -18,7 +18,7 @@ const {
 const { diag, DiagConsoleLogger, DiagLogLevel } = require("@opentelemetry/api");
 const config = require("../config")
 
-diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
+diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR);
 
 const sdks = [];
 

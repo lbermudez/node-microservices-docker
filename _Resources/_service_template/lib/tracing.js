@@ -15,9 +15,6 @@ const {
 const {
   OTLPTraceExporter
 } = require("@opentelemetry/exporter-trace-otlp-http");
-const { diag, DiagConsoleLogger, DiagLogLevel } = require("@opentelemetry/api");
-
-diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ERROR);
 
 const sdks = [];
 
