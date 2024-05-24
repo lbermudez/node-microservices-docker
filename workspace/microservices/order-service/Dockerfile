@@ -1,27 +1,32 @@
-FROM node:20
+FROM registry.access.redhat.com/ubi8/nodejs-20:latest
 
-# Change working directory
-WORKDIR "/app"
-
-# Update packages and install dependency packages for services
-RUN apt-get update \
- && apt-get dist-upgrade -y \
- && apt-get clean \
- && echo 'Finished installing dependencies'
+# Set the working directory
+WORKDIR /opt/app-root/src
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
+# Set user to root to install npm packages
+USER root
+
 # Install npm production packages 
-RUN npm install --production
+RUN npm install --omit=dev
 
-COPY . /app
+# Copy the rest of the application code
+COPY . .
 
+# Change ownership of the application files to the default user
+RUN chown -R 1001:0 /opt/app-root/src
+
+# Switch back to the default user
+USER 1001
+
+# Set environment variables
 ENV NODE_ENV production
 ENV PORT 3070
 
+# Expose the port the app runs on
 EXPOSE 3070
 
-USER node
-
+# Command to run the application
 CMD ["npm", "start"]
